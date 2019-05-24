@@ -2,7 +2,7 @@ import dash
 import dash_html_components as html
 import dash_core_components as dcc
 import random
-
+import time
 import colorlover as cl
 
 import numpy as np
@@ -13,15 +13,97 @@ import pandas as pd
 df = pd.read_csv("../cycle_viz/mock_hormone_data.csv")
 ######-------------------------------------------########
 
-transition = {'duration': 2000, 'easing': 'cubic-in-out', 'redraw':True, 'fromcurrent': False}
+transition = {'duration': 2000, 'easing': 'cubic-in-out','frame': {'duration': 100, 'redraw': True}}
+figure = {
+    'data': [{
+        'type': 'scatter',
+        'mode': 'lines+markers',
+        'x' : None,
+        'y' : None,
+        'name' : " ",
+        'opacity' : 1.0,   
+        'line' : {
+                'width' : 4,
+                'color' : "#A52D04"
+                }
+    },
+    
+    {
+        'type': 'scatter',
+        'mode': 'lines+markers',
+        'x' : None,
+        'y' : None,
+        'name' : "Considered Normal LH",
+        'opacity' : 0.2,
+        
+        'line' : {
+                'width' : 4,
+                'color' : "#A52D04"
+                }
+    },
+    
+        
+    {
+        'type': 'scatter',
+        'mode': 'lines+markers',
+        'x' : None,
+        'y' : None,
+        'name' : " ",
+        'opacity' : 1.0,
+        'line' : {
+                'width' : 4,
+                'color' : "#4B0082"
+                }
+    },
+        
+    {
+        'type': 'scatter',
+        'mode': 'lines+markers',
+        'x' : None,
+        'y' : None,
+        'name' : "Considered Normal PG",
+        'opacity' : 0.2,
+        
+        'line' : {
+                'width' : 4,
+                'color' : "#4B0082"
+                }
+    }
+
+    ],
+
+    'layout': {
+        'paper_bgcolor' : '#FCF1DA',
+        'plot_bgcolor' : '#FCF1DA',
+        'xaxis' : {
+                'title' : 'Cycle',
+                'showticklabels' : False
+                },
+        'yaxis' : {
+            'showticklabels' : False,
+            'range' : [0,26],
+            'autorange' :False
+                },
+        'height': 400
+
+    }
+}
+        
+figure['data'][0]['y'] = df['lh_normal'].values
+figure['data'][1]['y'] = df['lh_normal'].values
+figure['data'][0]['x'] = np.array(range(0, len(df['lh_short'].values)))
+figure['data'][1]['x'] = np.array(range(0, len(df['lh_short'].values)))
+
+figure['data'][2]['y'] =  df['pg_normal'].values
+figure['data'][3]['y'] = df['pg_normal'].values
+figure['data'][2]['x'] = np.array(range(0, len(df['lh_short'].values)))
+figure['data'][3]['x'] = np.array(range(0, len(df['lh_short'].values)))  
 
 external_stylesheets =['https://cdn.rawgit.com/plotly/dash-app-stylesheets/2d266c578d2a6e8850ebce48fdb52759b2aef506/stylesheet-oil-and-gas.css']
 app = dash.Dash(__name__, external_stylesheets=external_stylesheets)
 
 app.css.append_css({'external_url': 'https://cdn.rawgit.com/plotly/dash-app-stylesheets/2d266c578d2a6e8850ebce48fdb52759b2aef506/stylesheet-oil-and-gas.css'})  # noqa: E501
 
-
-                        
 
 app.layout = html.Div(
                     style={'backgroundColor':'#F9F0DF',
@@ -38,7 +120,7 @@ app.layout = html.Div(
                     html.A("About", target="_blank", href="https://www.oova.life", style={"color": "black", "text-decoration": "none", 'padding-left': 20, 'fontSize': 20}),
                 
                     
-                    html.P('''
+                    html.P('''w
                            Let us help you understand
                            ''',
                            style = {
@@ -117,7 +199,7 @@ app.layout = html.Div(
                                                     html.Button('Short', 
                                                         id='btn-1',
                                                         className = 'one columns',
-                                                        n_clicks_timestamp= 0 ,
+                                                        n_clicks_timestamp= 0, 
                                                         ),
        
                                                    html.Button('Long', 
@@ -184,10 +266,31 @@ app.layout = html.Div(
                dash.dependencies.Input('btn-5', 'n_clicks_timestamp')])
 
 def display(btn1, btn2, btn3, btn4, btn5):
-    
+        
+    bob = {
+        'paper_bgcolor' : '#FCF1DA',
+        'plot_bgcolor' : '#FCF1DA',
+        'xaxis' : {
+                'title' : 'Cycle',
+                'showticklabels' : False
+                },
+        'yaxis' : {
+            'showticklabels' : False,
+            'range' : [0,26],
+            'autorange' :False
+                },
+        'height': 400,
+        'transition' : transition
+
+    }
+                              
+
     if int(btn1) > int(btn2) and int(btn1) > int(btn3):
-        start = 0
-        data = df['lh_short'].values
+        figure['data'][0]['y'] = df['lh_short'].values
+        figure['data'][1]['y'] = df['lh_normal'].values
+        figure['data'][0]['x'] = np.array(range(0, len(df['lh_short'].values)))
+        figure['data'][1]['x'] = np.array(range(0, len(df['lh_short'].values)))
+        figure['layout'] = bob
         
         style1 = {
             'backgroundColor': "#A52D04",
@@ -209,9 +312,12 @@ def display(btn1, btn2, btn3, btn4, btn5):
         
         
     elif int(btn2) > int(btn1) and int(btn2) > int(btn3):
-        start = 0
-        data = df['lh_long'].values
-        
+        figure['data'][0]['y'] =  df['lh_long'].values
+        figure['data'][1]['y'] = df['lh_normal'].values
+        figure['data'][0]['x'] = np.array(range(0, len(df['lh_normal'].values)))
+        figure['data'][1]['x'] = np.array(range(0, len(df['lh_normal'].values)))
+        figure['layout'] = bob
+
         style1 = {
             'backgroundColor': "#FEF9DD",
             'color': '#A52D04',
@@ -231,8 +337,11 @@ def display(btn1, btn2, btn3, btn4, btn5):
             'margin': '5%'            }
         
     elif int(btn3) > int(btn1) and int(btn3) > int(btn2):
-        start = 0
-        data = df['lh_pcos'].values
+        figure['data'][0]['y'] =  df['lh_pcos'].values
+        figure['data'][1]['y'] = df['lh_normal'].values
+        figure['data'][0]['x'] = np.array(range(0, len(df['lh_normal'].values)))
+        figure['data'][1]['x'] = np.array(range(0, len(df['lh_normal'].values)))
+        figure['layout'] = bob
         
         style1 = {
             'backgroundColor': "#FEF9DD",
@@ -253,7 +362,13 @@ def display(btn1, btn2, btn3, btn4, btn5):
             'margin': '5%'            }
         
     else:
-        start = 1
+#        figure['data'][0]['y'] =  None
+#        figure['data'][1]['y'] = None
+#        figure['data'][0]['x'] = None
+#        figure['data'][1]['x'] = None     
+#        figure['layout'] = bob
+
+
         style1 = {
             'backgroundColor': "#FEF9DD",
             'color': '#A52D04',
@@ -278,10 +393,12 @@ def display(btn1, btn2, btn3, btn4, btn5):
             }
         
     if int(btn4) > int(btn5):
-        start = 0
-        pg_data = df['pg_normal'].values
+        figure['data'][2]['y'] =  df['pg_normal'].values
+        figure['data'][3]['y'] = df['pg_normal'].values
+        figure['data'][2]['x'] = np.array(range(0, len(df['lh_normal'].values)))
+        figure['data'][3]['x'] = np.array(range(0, len(df['lh_normal'].values)))
+        figure['layout'] = bob
 
-        
         style4 = {
             'backgroundColor': "#4B0082",
             'color': '#FEF9DD',
@@ -299,8 +416,11 @@ def display(btn1, btn2, btn3, btn4, btn5):
             }
         
     elif int(btn5) > int(btn4):
-        start = 0
-        pg_data = df['pg_not'].values
+        figure['data'][2]['y'] =  df['pg_not'].values
+        figure['data'][3]['y'] = df['pg_normal'].values
+        figure['data'][2]['x'] = np.array(range(0, len(df['lh_normal'].values)))
+        figure['data'][3]['x'] = np.array(range(0, len(df['lh_normal'].values)))
+        figure['layout'] = bob
 
         
         style4 = {
@@ -320,13 +440,17 @@ def display(btn1, btn2, btn3, btn4, btn5):
             }
 
     else:
-        start = 1
+#        figure['data'][2]['y'] =  None
+#        figure['data'][3]['y'] = None
+#        figure['data'][2]['x'] = None
+#        figure['data'][3]['x'] = None  
+#        figure['layout'] = bob
+
         style4 = {
-            'backgroundColor': "#FEF9DD",
-            'color': '#4B0082',
+            'backgroundColor': "#4B0082",
+            'color': '#FEF9DD',
             'width':'90%',
             'margin': '5%'
-
             }
         
         style5 = {
@@ -334,171 +458,14 @@ def display(btn1, btn2, btn3, btn4, btn5):
             'color': '#4B0082',
             'width':'90%',
             'margin': '5%'
-
             }
 
 
-    if start == 0:
-        x = np.array(range(0, len(data)))
-        y = data
-        
-        data2 = df['lh_normal'].values
-        x2 = np.array(range(0, len(data2)))
-        y2 = data2
-        
-        
-        pg_x = np.array(range(0, len(pg_data)))
-        pg_y = pg_data
-        
-        pg_x_fx = np.array(range(0, len(df['pg_normal'].values)))
-        pg_y_fx = df['pg_normal'].values
-        
-        
-        figure = {
-                'data': [{
-                    'type': 'scatter',
-                    'mode': 'lines+markers',
-                    'x' : x,
-                    'y' : y,
-                    'name' : " ",
-                    'opacity' : 1.0,
-                    
-                    'line' : {
-                            'width' : 4,
-                            'color' : "#A52D04"
-                            }
-                },
-                
-                {
-                    'type': 'scatter',
-                    'mode': 'lines+markers',
-                    'x' : x2,
-                    'y' : y2,
-                    'name' : "Considered Normal LH",
-                    'opacity' : 0.2,
-                    
-                    'line' : {
-                            'width' : 4,
-                            'color' : "#A52D04"
-                            }
-                },
-                
-                    
-                {
-                    'type': 'scatter',
-                    'mode': 'lines+markers',
-                    'x' : pg_x,
-                    'y' : pg_y,
-                    'name' : " ",
-                    'opacity' : 1.0,
-                    
-                    'line' : {
-                            'width' : 4,
-                            'color' : "#4B0082"
-                            }
-                },
-                    
-                {
-                    'type': 'scatter',
-                    'mode': 'lines+markers',
-
-                    'x' : pg_x_fx,
-                    'y' : pg_y_fx,
-                    'name' : "Considered Normal PG",
-                    'opacity' : 0.2,
-                    
-                    'line' : {
-                            'width' : 4,
-                            'color' : "#4B0082"
-                            }
-                }
-            
-                ],
-        
-                'layout': {
-                    'paper_bgcolor' : '#FCF1DA',
-                    'plot_bgcolor' : '#FCF1DA',
-                    'xaxis' : {
-                            'title' : 'Cycle',
-                            'showticklabels' : False
-                            },
-                    'yaxis' : {
-                        'showticklabels' : False,
-                        'range' : [0,26],
-                        'autorange' :False
-                            },
-                    'height': 400,
-                    'transition': transition
-    
-    
-                }
-        }
-    
-    else:
-        pg_start_x = np.array([random.randint(0,20) for a in range(0,28)])
-        pg_start_y = np.array([random.randint(0,4) for a in range(0,20)])
-        lh_start_x = np.array([random.randint(0,20) for a in range(0,28)])
-        lh_start_y = np.array([random.randint(12,16) for a in range(0,20)])
-                
-        figure = {
-                        
-                'data': [{
-                    'type': 'scatter',
-                    'x' : pg_start_x,
-                    'y' : pg_start_y,
-                    'name' : " ",
-                    'opacity' : 1.0,
-                    'mode': 'markers',
-                    
-                    'line' : {
-                            'width' : 4,
-                            'color' : "#A52D04"
-                            }
-                },
-                
-                {
-                    'type': 'scatter',
-                    'mode': 'markers',
-
-                    'x' : lh_start_x,
-                    'y' : lh_start_y,
-                    'name' : "Considered Normal LH",
-                    'opacity' : 0.2,
-                    
-                    'line' : {
-                            'width' : 4,
-                            'color' : "#A52D04"
-                            }
-                }
-                ],
-        
-                'layout': {
-                    'paper_bgcolor' : '#FCF1DA',
-                    'plot_bgcolor' : '#FCF1DA',
-                    'xaxis' : {
-                            'title' : 'Cycle',
-                            'showticklabels' : False
-                            },
-                    'yaxis' : {
-                        'showticklabels' : False,
-                        'range' : [0,26],
-                        'autorange' :False
-                            },
-                    'height': 400,
-                    'transition': transition
-    
-    
-                }
-        }
-    
     return figure, style1, style2, style3, style4, style5
 
 
-
-
-
 if __name__ == '__main__':
-    app.run_server( port = 8928, debug=True)
+    app.run_server(port = 8931, debug=True)
 
 
 
