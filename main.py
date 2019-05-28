@@ -105,6 +105,7 @@ external_stylesheets =['https://cdn.rawgit.com/plotly/dash-app-stylesheets/2d266
 app = dash.Dash(__name__, external_stylesheets=external_stylesheets)
 
 app.css.append_css({'external_url': 'https://cdn.rawgit.com/plotly/dash-app-stylesheets/2d266c578d2a6e8850ebce48fdb52759b2aef506/stylesheet-oil-and-gas.css'})  # noqa: E501
+server = app.server
 
 
 app.layout = html.Div(
@@ -474,7 +475,7 @@ def display(btn1, btn2, btn3, btn4, btn5):
 
 
 if __name__ == '__main__':
-    app.run_server(host = "127.0.0.1", port = 8080, debug=True)
+    app.run_server( port = 8080, debug=True)
 
 
 
