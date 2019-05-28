@@ -8,7 +8,7 @@ import pandas as pd
 
 
 # Create a DataFrame from the .csv file:
-df = pd.read_csv("../data/mock_hormone_data.csv")
+df = pd.read_csv("./data/mock_hormone_data.csv")
 button_margin = '1%'
 bg_color = '#FFFCEB'
 ######-------------------------------------------########
@@ -474,7 +474,7 @@ def display(btn1, btn2, btn3, btn4, btn5):
 
 
 if __name__ == '__main__':
-    app.run_server(port = 8934, debug=True)
+    app.run_server(host = "127.0.0.1", port = 8080, debug=True)
 
 
 
