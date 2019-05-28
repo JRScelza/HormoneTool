@@ -11,6 +11,8 @@ import pandas as pd
 
 # Create a DataFrame from the .csv file:
 df = pd.read_csv("../cycle_viz/mock_hormone_data.csv")
+button_margin = '1%'
+bg_color = '#FFFCEB'
 ######-------------------------------------------########
 
 transition = {'duration': 2000, 'easing': 'cubic-in-out','frame': {'duration': 100, 'redraw': True}}
@@ -73,8 +75,8 @@ figure = {
     ],
 
     'layout': {
-        'paper_bgcolor' : '#FCF1DA',
-        'plot_bgcolor' : '#FCF1DA',
+        'paper_bgcolor' : '#FFFCEB',
+        'plot_bgcolor' : '#FFFCEB',
         'xaxis' : {
                 'title' : 'Cycle',
                 'showticklabels' : False
@@ -106,67 +108,38 @@ app.css.append_css({'external_url': 'https://cdn.rawgit.com/plotly/dash-app-styl
 
 
 app.layout = html.Div(
-                    style={'backgroundColor':'#F9F0DF',
+                    style={'backgroundColor':'#FFFFFF',
                            'margin':0
 
                            },
                     
                     children = [
-        
-        
-        
-                    html.Img(src=app.get_asset_url('logo.png'),style = {'width': 150}) ,
+
+#                    html.Img(src=app.get_asset_url('logo.png'),style = {'width': 150}) ,
                     
                     html.A("About", target="_blank", href="https://www.oova.life", style={"color": "black", "text-decoration": "none", 'padding-left': 20, 'fontSize': 20}),
-                
+                    html.A("Herro", target="_blank", href="https://www.oova.life", style={"color": "black", "text-decoration": "none", 'padding-left': 20, 'fontSize': 20}),
+                    html.A("Hormone Tool", target="_blank", href="https://www.oova.life", style={"color": "blue", "text-decoration": "none", 'padding-left': 20, 'fontSize': 20}),
+
                     
-                    html.P('''w
-                           Let us help you understand
+                    html.P('''
+                           Hormone Tool
                            ''',
                            style = {
                                  'fontSize' : 30,
                                  'color': 'ff9900',
                                  'font-family':'verdana',
-                                 'textAlign': "center",
+                                 'textAlign': "left",
                                  'width': '100%',
-                                 'marginBottom': 30
+                                 'marginBottom': 30,
+                                 'marginLeft': 20,
+                                 'marginTop': 40,
+                                 'fontWeight': 800
 #                                 'padding-right': '30%',
 #                                 'padding-left': '30%'
                                  
                                      }
                            ),
-                    
-#                    html.P('''
-#                           way that I can think
-#                           ''',
-#                           style = {
-#                                 'fontSize' : 20,
-#                                 'color': 'ff9900',
-#                                 'font-family':'verdana',
-#                                 'textAlign': "center",
-#                                 'width': '100%',
-#                                 'margin': 0
-##                                 'padding-right': '30%',
-##                                 'padding-left': '30%'
-#                                 
-#                                     }
-#                           ),
-#                    
-#                    html.P('''
-#                           to get this done right now
-#                           ''',
-#                           style = {
-#                                 'fontSize' : 20,
-#                                 'color': 'ff9900',
-#                                 'font-family':'verdana',
-#                                 'textAlign': "center",
-#                                 'width': '100%',
-#                                 'margin-bottom': 40
-##                                 'padding-right': '30%',
-##                                 'padding-left': '30%'
-#                                 
-#                                     }
-#                           ),
 
                     html.Div(
                             className = "row",
@@ -188,10 +161,10 @@ app.layout = html.Div(
                                                                  style = {
                                                                          'fontSize' : 20,
                                                                          'color': 'ff9900',
-                                                                         'font-family':'verdana',
+                                                                         'font-family':'Helvetica',
                                                                          'textAlign': "left",
                                                                          'margin': 10,
-                                                                         'padding-left': "20%"
+                                                                         'padding-left': "5%"
 
                                                                          }),
     
@@ -219,10 +192,10 @@ app.layout = html.Div(
                                                      style = {
                                                              'fontSize' : 20,
                                                              'color': 'ff9900',
-                                                             'font-family':'verdana',
+                                                             'font-family':'Helvetica',
                                                              'textAlign': "left",
                                                              'margin': 10,
-                                                             'padding-left': "20%"
+                                                             'padding-left': "5%"
                                                             
                                                              }),
     
@@ -243,14 +216,39 @@ app.layout = html.Div(
                                                    ]),
                                     html.Div(
                                             className = "nine columns",
+                                            style = {'padding-right': 0,
+                                                     'backgroundColor':'#FFFFFF'},
+                                                    
                                             children = [
                                                     dcc.Graph(id='lh-graph')
                                                     ]
                                             )
                                         ]
-                                )
-                            ]
-                        )
+                                ),
+
+                    html.P('''
+                           We can learn
+                           so much from this
+                           lets do it!
+                           ''',
+                           style = {
+                                 'fontSize' : 30,
+                                 'color': 'ff9900',
+                                 'font-family':'verdana',
+                                 'textAlign': "center",
+                                 'width': '100%',
+                                 'marginBottom': 30,
+                                 'marginLeft': 20,
+                                 'marginTop': 40,
+                                 'fontWeight': 800
+#                                 'padding-right': '30%',
+#                                 'padding-left': '30%'
+                                 
+                                     }
+                           )
+
+                    ]
+                )
 
 
 @app.callback([dash.dependencies.Output('lh-graph', 'figure'),
@@ -296,19 +294,21 @@ def display(btn1, btn2, btn3, btn4, btn5):
             'backgroundColor': "#A52D04",
             'color': '#FEF9DD',
             'width':'90%',
-            'margin': '5%'            }
+            'margin': button_margin            }
         
         style2 = {
             'backgroundColor': "#FEF9DD",
             'color': '#A52D04',
             'width':'90%',
-            'margin': '5%'            }
+            'margin': button_margin            }
                 
         style3 = {
             'backgroundColor': "#FEF9DD",
             'color': '#A52D04',
             'width':'90%',
-            'margin': '5%'            }
+            'margin': button_margin,
+            'marginBottom': 20
+            }
         
         
     elif int(btn2) > int(btn1) and int(btn2) > int(btn3):
@@ -322,19 +322,21 @@ def display(btn1, btn2, btn3, btn4, btn5):
             'backgroundColor': "#FEF9DD",
             'color': '#A52D04',
             'width':'90%',
-            'margin': '5%'            }
+            'margin': button_margin          }
         
         style2 = {
             'backgroundColor': "#A52D04",
             'color': '#FEF9DD',
             'width':'90%',
-            'margin': '5%'            }
+            'margin': button_margin            }
                 
         style3 = {
             'backgroundColor': "#FEF9DD",
             'color': '#A52D04',
             'width':'90%',
-            'margin': '5%'            }
+            'margin': button_margin,
+            'marginBottom': 20
+            }
         
     elif int(btn3) > int(btn1) and int(btn3) > int(btn2):
         figure['data'][0]['y'] =  df['lh_pcos'].values
@@ -347,19 +349,21 @@ def display(btn1, btn2, btn3, btn4, btn5):
             'backgroundColor': "#FEF9DD",
             'color': '#A52D04',
             'width':'90%',
-            'margin': '5%'            }
+            'margin': button_margin            }
         
         style2 = {
             'backgroundColor': "#FEF9DD",
             'color': '#A52D04',
             'width':'90%',
-            'margin': '5%'            }
+            'margin': button_margin            }
                 
         style3 = {
             'backgroundColor': "#A52D04",
             'color': '#FEF9DD',
             'width':'90%',
-            'margin': '5%'            }
+            'margin': button_margin,
+            'marginBottom': 20
+            }
         
     else:
 #        figure['data'][0]['y'] =  None
@@ -373,14 +377,14 @@ def display(btn1, btn2, btn3, btn4, btn5):
             'backgroundColor': "#FEF9DD",
             'color': '#A52D04',
              'width':'90%',
-             'margin': '5%'
+             'margin': button_margin
             }
         
         style2 = {
             'backgroundColor': "#FEF9DD",
             'color': '#A52D04',
              'width':'90%',
-             'margin': '5%'
+             'margin': button_margin
 
             }
                 
@@ -388,7 +392,9 @@ def display(btn1, btn2, btn3, btn4, btn5):
             'backgroundColor': "#FEF9DD",
             'color': '#A52D04',
             'width':'90%',
-            'margin': '5%'
+            'margin': button_margin,
+            'marginBottom': 20
+
 
             }
         
@@ -403,7 +409,7 @@ def display(btn1, btn2, btn3, btn4, btn5):
             'backgroundColor': "#4B0082",
             'color': '#FEF9DD',
             'width':'90%',
-            'margin': '5%'
+            'margin': button_margin
 
             }
         
@@ -411,8 +417,7 @@ def display(btn1, btn2, btn3, btn4, btn5):
             'backgroundColor': "#FEF9DD",
             'color': '#4B0082',
             'width':'90%',
-            'margin': '5%'
-
+            'margin': button_margin
             }
         
     elif int(btn5) > int(btn4):
@@ -427,7 +432,7 @@ def display(btn1, btn2, btn3, btn4, btn5):
             'backgroundColor': "#FEF9DD",
             'color': '#4B0082',
             'width':'90%',
-            'margin': '5%'
+            'margin': button_margin
 
             }
         
@@ -435,7 +440,7 @@ def display(btn1, btn2, btn3, btn4, btn5):
             'backgroundColor': "#4B0082",
             'color': '#FEF9DD',
             'width':'90%',
-            'margin': '5%'
+            'margin': button_margin
 
             }
 
@@ -450,14 +455,14 @@ def display(btn1, btn2, btn3, btn4, btn5):
             'backgroundColor': "#4B0082",
             'color': '#FEF9DD',
             'width':'90%',
-            'margin': '5%'
+            'margin': button_margin
             }
         
         style5 = {
             'backgroundColor': "#FEF9DD",
             'color': '#4B0082',
             'width':'90%',
-            'margin': '5%'
+            'margin': button_margin
             }
 
 
@@ -465,7 +470,7 @@ def display(btn1, btn2, btn3, btn4, btn5):
 
 
 if __name__ == '__main__':
-    app.run_server(port = 8931, debug=True)
+    app.run_server(port = 8933, debug=True)
 
 
 
