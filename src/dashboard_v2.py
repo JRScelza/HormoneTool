@@ -1,16 +1,14 @@
 import dash
 import dash_html_components as html
 import dash_core_components as dcc
-import random
-import time
-import colorlover as cl
+ 
 
 import numpy as np
 import pandas as pd
 
 
 # Create a DataFrame from the .csv file:
-df = pd.read_csv("../cycle_viz/mock_hormone_data.csv")
+df = pd.read_csv("../data/mock_hormone_data.csv")
 button_margin = '1%'
 bg_color = '#FFFCEB'
 ######-------------------------------------------########
@@ -23,7 +21,8 @@ figure = {
         'x' : None,
         'y' : None,
         'name' : " ",
-        'opacity' : 1.0,   
+        'opacity' : 1.0, 
+        'showlegend' : False,
         'line' : {
                 'width' : 4,
                 'color' : "#A52D04"
@@ -37,7 +36,7 @@ figure = {
         'y' : None,
         'name' : "Considered Normal LH",
         'opacity' : 0.2,
-        
+        'showlegend' : False,
         'line' : {
                 'width' : 4,
                 'color' : "#A52D04"
@@ -52,6 +51,7 @@ figure = {
         'y' : None,
         'name' : " ",
         'opacity' : 1.0,
+        'showlegend' : False,
         'line' : {
                 'width' : 4,
                 'color' : "#4B0082"
@@ -65,7 +65,7 @@ figure = {
         'y' : None,
         'name' : "Considered Normal PG",
         'opacity' : 0.2,
-        
+        'showlegend': False,
         'line' : {
                 'width' : 4,
                 'color' : "#4B0082"
@@ -117,9 +117,10 @@ app.layout = html.Div(
 
 #                    html.Img(src=app.get_asset_url('logo.png'),style = {'width': 150}) ,
                     
-                    html.A("About", target="_blank", href="https://www.oova.life", style={"color": "black", "text-decoration": "none", 'padding-left': 20, 'fontSize': 20}),
-                    html.A("Herro", target="_blank", href="https://www.oova.life", style={"color": "black", "text-decoration": "none", 'padding-left': 20, 'fontSize': 20}),
-                    html.A("Hormone Tool", target="_blank", href="https://www.oova.life", style={"color": "blue", "text-decoration": "none", 'padding-left': 20, 'fontSize': 20}),
+                    html.A("Hormone Tool", target="_blank", href="https://www.oova.life", style={"color": "black", "text-decoration": "none", 'padding-left': 10, 'fontSize': 20, 'textAlign': "left"}),
+                    html.A("About", target="_blank", href="https://www.oova.life", style={"color": "black", "text-decoration": "none", 'fontSize': 20, 'padding-left': '75%'}),
+                    html.A("Info", target="_blank", href="https://www.oova.life", style={"background-image": app.get_asset_url('background_1.png'), "color": "blue", "text-decoration": "none", 'fontSize': 20}),
+                    html.Img(src=app.get_asset_url('background_2.png'),style = {'width': '100%'}) ,
 
                     
                     html.P('''
@@ -220,7 +221,8 @@ app.layout = html.Div(
                                                      'backgroundColor':'#FFFFFF'},
                                                     
                                             children = [
-                                                    dcc.Graph(id='lh-graph')
+                                                    dcc.Graph(id='lh-graph', config = {'displayModeBar': False})
+                                                    
                                                     ]
                                             )
                                         ]
@@ -236,11 +238,13 @@ app.layout = html.Div(
                                  'color': 'ff9900',
                                  'font-family':'verdana',
                                  'textAlign': "center",
-                                 'width': '100%',
+                                 'width': '40%',
                                  'marginBottom': 30,
                                  'marginLeft': 20,
                                  'marginTop': 40,
-                                 'fontWeight': 800
+                                 'fontWeight': 800,
+                                 'padding-left': '30%',
+                                 'padding-right': '30%'
 #                                 'padding-right': '30%',
 #                                 'padding-left': '30%'
                                  
@@ -470,7 +474,7 @@ def display(btn1, btn2, btn3, btn4, btn5):
 
 
 if __name__ == '__main__':
-    app.run_server(port = 8933, debug=True)
+    app.run_server(port = 8934, debug=True)
 
 
 
