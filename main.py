@@ -1,7 +1,7 @@
 import dash
 import dash_html_components as html
 import dash_core_components as dcc
- 
+from flask import Flask
 
 import numpy as np
 import pandas as pd
@@ -102,10 +102,10 @@ figure['data'][2]['x'] = np.array(range(0, len(df['lh_short'].values)))
 figure['data'][3]['x'] = np.array(range(0, len(df['lh_short'].values)))  
 
 external_stylesheets =['https://cdn.rawgit.com/plotly/dash-app-stylesheets/2d266c578d2a6e8850ebce48fdb52759b2aef506/stylesheet-oil-and-gas.css']
-app = dash.Dash(__name__, external_stylesheets=external_stylesheets)
+server = Flask(__name__)
+app = dash.Dash( server=server, external_stylesheets=external_stylesheets)
 
 app.css.append_css({'external_url': 'https://cdn.rawgit.com/plotly/dash-app-stylesheets/2d266c578d2a6e8850ebce48fdb52759b2aef506/stylesheet-oil-and-gas.css'})  # noqa: E501
-server = app.server
 
 
 app.layout = html.Div(
@@ -121,7 +121,7 @@ app.layout = html.Div(
                     html.A("Hormone Tool", target="_blank", href="https://www.oova.life", style={"color": "black", "text-decoration": "none", 'padding-left': 10, 'fontSize': 20, 'textAlign': "left"}),
                     html.A("About", target="_blank", href="https://www.oova.life", style={"color": "black", "text-decoration": "none", 'fontSize': 20, 'padding-left': '75%'}),
                     html.A("Info", target="_blank", href="https://www.oova.life", style={"background-image": app.get_asset_url('background_1.png'), "color": "blue", "text-decoration": "none", 'fontSize': 20}),
-                    html.Img(src=app.get_asset_url('background_2.png'),style = {'width': '100%'}) ,
+                    html.Img(src='https://lh3.googleusercontent.com/x73l1WEcIESw2ca53WG9c7Q5TEMSEBwh1KZKtSJuGNlfPBSQWbJdOmoz9HA2nSeNoUGTaa2gxHqFEKaxY0awQXlkLlAfd_n45fX0eAa9DKvTGzIqPojgEEAILvjgt201TodH4Q263V5NdF5-TOPsZE6unFQhOhJpfCLzU71K-wiSWsBOEEb8QU7Z9i9cAR7TEFiFiUdlnNiRdB_ZjgOrc_RKUN_CWIScmEzz8MHmlTJt1vuTPz9-_ammEXytQ8Zw8KIC1jrJ7SPSiN9XF1X9ijJQx3KIrtasbQ0N_uf7AxsmFdKm-7cKi9-olBBkCANGG-WUFcOXr_VHElfXlq3KZ6-HM2t41XVfqgGJ4RVOuJFr7lahzZG2WWsFKOz0kGjq4fycDf2svC0lHgcGRo1x_vT21FzFvOh0E4WhRjo4u797m1EzVKYfZaw2Gwf4hcN5-D2PAfFXsdRXJoe7fCuGaXvGflCo7gKlX2icP_4znFFWOmH_NeHnoEwypP1YytJ411ktc_AnqthGxkzSOKrzbWMaEB5zuXJ5o7hM2JMg0P43uPppTzdv09dJVB2J4EbneDJutJxi65_qDFHW3JFKFjvTSEEQ7LCFvAAqVxc8cTMMOZSyyDO_fBvtxDty36Aj5be40e1vlL0LeanZdjp0DuyqvbzTd41Q=w527-h220-no',style = {'width': '100%'}) ,
 
                     
                     html.P('''
@@ -475,7 +475,7 @@ def display(btn1, btn2, btn3, btn4, btn5):
 
 
 if __name__ == '__main__':
-    app.run_server( port = 8080, debug=True)
+    server.run(debug=True)
 
 
 
